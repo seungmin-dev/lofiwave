@@ -4,80 +4,77 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import WavyText from "../components/Wavytext";
+import { cls } from "../components/util";
+import YouTube, { YouTubePlayer } from "react-youtube";
+import { YouTubeProps } from "react-youtube";
+
+let player: YouTubePlayer;
+const opts = {
+  height: "0",
+  width: "0",
+  playerVars: {
+    autoPlay: 1,
+    mute: 0,
+    controls: 0,
+  },
+};
 
 const Home: NextPage = ({ response }) => {
-  const [playing, setPlaying] = useState(true);
+  const [playingState, setPlayingState] = useState("play");
+  const [musicNumber, setMusicNumber] = useState(0);
+
   const image = useRef<HTMLImageElement | null>(null);
   const lpImage = useRef<HTMLImageElement | null>(null);
   const title = useRef<HTMLHeadingElement | null>(null);
   const description = useRef<HTMLParagraphElement | null>(null);
-  let player: any;
-
-  const onClickList = (item) => {
-    image.current!.src = item.snippet.thumbnails.high.url;
-    lpImage.current!.src = item.snippet.thumbnails.medium.url;
-    title.current!.textContent = item.snippet.title;
-    description.current!.textContent = item.snippet.description;
-  };
 
   useEffect(() => {
     image.current!.src = response.items[0].snippet.thumbnails.high.url;
     lpImage.current!.src = response.items[0].snippet.thumbnails.medium.url;
     title.current!.textContent = response.items[0].snippet.title;
     description.current!.textContent = response.items[0].snippet.description;
-  }, []);
 
-  const onYouTubePlayerAPIReady = () => {
-    window.YT.ready(function () {
-      player = new YT.Player("video", {
-        height: "0",
-        width: "0",
-        videoId: "jfKfPfyJRdk",
-        // videoId: response.items[0].id.videoId,
-        playerVars: { autoplay: 1, controls: 0, disablekb: 1 },
-        events: {
-          onReady: onPlayerReady,
-        },
-      });
-    });
+    setPlayingState("stop");
+
+    if (musicNumber) changeMusic(musicNumber);
+  }, [musicNumber]);
+
+  const onReady: YouTubeProps["onReady"] = (event) => {
+    player = event.target;
+    player.playVideo();
   };
-  var onPlayerReady = (e) => {
-    e.target.playVideo();
+  const stopPlayVideo = () => {
+    if (playingState === "play") {
+      setPlayingState("stop");
+      player.playVideo();
+    } else {
+      setPlayingState("play");
+      player.pauseVideo();
+    }
   };
-  const playVideo = () => {
-    let player = document.querySelector("#video");
-    player.contentWindow.postMessage(
-      '{"event":"command","func":"playVideo","args":""}',
-      "https://www.youtube.com"
-    );
-    setPlaying((prev) => !prev);
-  };
-  const stopVideo = () => {
-    let player = document.querySelector("#video");
-    player.contentWindow.postMessage(
-      '{"event":"command","func":"pauseVideo","args":""}',
-      "https://www.youtube.com"
-    );
-    setPlaying((prev) => !prev);
+  const changeMusic = (index: number, state?: string) => {
+    let item = response.items[index];
+
+    image.current!.src = item.snippet.thumbnails.high.url;
+    lpImage.current!.src = item.snippet.thumbnails.medium.url;
+    title.current!.textContent = item.snippet.title;
+    description.current!.textContent = item.snippet.description;
+
+    player.loadVideoById(item.id.videoId, 0);
   };
 
   return (
-    <div className="w-full h-screen">
-      <Script
-        src="http://www.youtube.com/iframe_api"
-        onLoad={() => {
-          onYouTubePlayerAPIReady();
-        }}
-      />
+    <div className="w-full h-screen overflow-hidden">
+      <Script src="http://www.youtube.com/iframe_api" />
       <div className="w-1/2 h-full m-auto relative pt-32 pl-52 sm:pl-0 md:pl-0 lg:pl-0 xl:pl-0">
         <div className="w-full h-full flex flex-row sm:flex-row-reverse md:flex-row">
           {/* 왼쪽 부분(재생목록) */}
-          <div className="w-4/12 min-w-[26rem] h-4/6 overflow-y-scroll bg-white/70 p-8 rounded-2xl">
-            {response.items.map((item: any) => (
+          <div className="w-4/12 min-w-[26rem] h-4/6 overflow-y-scroll bg-white/70 pt-3 rounded-2xl">
+            {response.items.map((item: any, index: number) => (
               <div
-                key={item.id.videoId}
-                onClick={() => onClickList(item)}
-                className="mb-3"
+                key={index}
+                onClick={() => setMusicNumber(index)}
+                className="p-3 px-6 border-b-[1px] border-white"
               >
                 <h5 className="text-gray-950">{item.snippet.title}</h5>
                 <input type="hidden" value={item.snippet.thumbnails.high.url} />
@@ -106,14 +103,22 @@ const Home: NextPage = ({ response }) => {
             {/* 제어판 */}
             <div className="w-full">
               <div className="w-3/5 m-auto pt-3 flex space-between">
-                <button className="w-10 h-10">
+                <button
+                  onClick={() =>
+                    setMusicNumber(musicNumber !== 0 ? musicNumber - 1 : 0)
+                  }
+                  className={cls(musicNumber !== 0 ? "" : "cursor-not-allowed")}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-10 h-10"
+                    className={cls(
+                      "w-10 h-10",
+                      musicNumber === 0 ? "text-gray-400" : "text-white"
+                    )}
                   >
                     <path
                       strokeLinecap="round"
@@ -122,15 +127,15 @@ const Home: NextPage = ({ response }) => {
                     />
                   </svg>
                 </button>
-                <button onClick={playing ? stopVideo : playVideo}>
-                  {playing ? (
+                <button onClick={stopPlayVideo}>
+                  {playingState === "stop" ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-10 h-10"
+                      className="w-10 h-10 text-white"
                     >
                       <path
                         strokeLinecap="round"
@@ -145,7 +150,7 @@ const Home: NextPage = ({ response }) => {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-10 h-10"
+                      className="w-10 h-10 text-white"
                     >
                       <path
                         strokeLinecap="round"
@@ -160,14 +165,21 @@ const Home: NextPage = ({ response }) => {
                     </svg>
                   )}
                 </button>
-                <button>
+                <button
+                  onClick={() =>
+                    setMusicNumber(musicNumber !== 49 ? musicNumber + 1 : 49)
+                  }
+                  className={cls(
+                    musicNumber === 49 ? "cursor-not-allowed" : ""
+                  )}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-10 h-10"
+                    className="w-10 h-10 text-white"
                   >
                     <path
                       strokeLinecap="round"
@@ -177,7 +189,11 @@ const Home: NextPage = ({ response }) => {
                   </svg>
                 </button>
               </div>
-              <div id="video"></div>
+              <YouTube
+                videoId={response.items[0].id.videoId}
+                opts={opts}
+                onReady={onReady}
+              />
             </div>
             <div className="pt-5">
               <h2 className="text-xl text-white" ref={title}></h2>
@@ -185,6 +201,8 @@ const Home: NextPage = ({ response }) => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden">
         <Image
           src=""
           alt=""
@@ -192,8 +210,8 @@ const Home: NextPage = ({ response }) => {
           fill
           className="blur-md"
           style={{
-            width: "100%",
-            height: "100%",
+            width: "110%",
+            height: "110%",
             objectFit: "cover",
             objectPosition: "center",
             zIndex: -100,
