@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
-import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import WavyText from "../components/Wavytext";
 import { cls } from "../components/util";
 import YouTube, { YouTubePlayer } from "react-youtube";
 import { YouTubeProps } from "react-youtube";
+import { motion } from "framer-motion";
 
 let player: YouTubePlayer;
 const opts = {
@@ -83,10 +82,14 @@ const Home: NextPage = ({ response }) => {
           </div>
           {/* 오른쪽 부분(개별 재생화면) */}
           <div className="pl-20">
-            <div className="w-[20rem] h-[20rem] pt-[4rem] pl-[4rem] rounded-full bg-black">
+            <motion.div
+              className="relative w-[20rem] h-[20rem] pt-[4rem] pl-[4rem] rounded-full bg-black"
+              animate={{ rotate: 360 }}
+              transition={{ ease: "linear", duration: 2, repeat: Infinity }}
+            >
               <Image
                 src=""
-                alt=""
+                alt="lpImage"
                 className="relative block w-1/2 h-1/2"
                 ref={lpImage}
                 fill
@@ -99,7 +102,7 @@ const Home: NextPage = ({ response }) => {
                   position: "relative",
                 }}
               />
-            </div>
+            </motion.div>
             {/* 제어판 */}
             <div className="w-full">
               <div className="w-3/5 m-auto pt-3 flex space-between">
