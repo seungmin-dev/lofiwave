@@ -6,19 +6,19 @@ import { cls } from "../components/util";
 import YouTube, { YouTubePlayer } from "react-youtube";
 import { YouTubeProps } from "react-youtube";
 import { motion } from "framer-motion";
+import { Options } from "youtube-player/dist/types";
 
 let player: YouTubePlayer;
-const opts = {
+const opts: Options = {
   height: "0",
   width: "0",
   playerVars: {
-    autoPlay: 1,
-    mute: 0,
+    autoplay: 1,
     controls: 0,
   },
 };
 
-const Home: NextPage = ({ response }) => {
+const Home: NextPage = ({ response }: any) => {
   const [playingState, setPlayingState] = useState("play");
   const [musicNumber, setMusicNumber] = useState(0);
 
