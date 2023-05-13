@@ -7,8 +7,6 @@ import YouTube, { YouTubePlayer } from "react-youtube";
 import { YouTubeProps } from "react-youtube";
 import { motion } from "framer-motion";
 
-import bgImage from "../components/bgimage.jpg";
-
 let player: YouTubePlayer;
 const opts = {
   height: "0",
@@ -235,9 +233,9 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden">
+      <div className="w-full h-full absolute top-0 leftß-0 -z-10 overflow-hidden">
         <Image
-          src={bgImage}
+          src=""
           alt=""
           ref={image}
           fill
