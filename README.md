@@ -4,7 +4,7 @@
 유튜브에서 로파이 음악을 모아서 간편하게 들을 수 있습니다. 휴식을 취할 때, 독서할 때, 코딩할 때 이용하기 좋은 사이트입니다.
 
 <p align="center">
-![로파이웨이브](https://github.com/seungmin-dev/lofiwave/assets/67530394/883227d6-dad8-4287-96fc-cf8696d4c20a)
+<img width="600" alt="스크린샷 2023-05-15 오후 1 13 33" src="https://github.com/seungmin-dev/lofiwave/assets/67530394/28078202-5732-4b52-8ae5-6d776431b236">
 </p>
 
 ### ✨ 기술스택
