@@ -1,34 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 🎧🌊 LOFIWAVE
 
-## Getting Started
+📍 <b>DEMO</b> - <a href="https://easynote.vercel.app/" target="_blank">https://easynote.vercel.app/</a><br/><br/>
+유튜브에서 로파이 음악을 모아서 간편하게 들을 수 있습니다. 휴식을 취할 때, 독서할 때, 코딩할 때 이용하기 좋은 사이트입니다.
 
-First, run the development server:
+<p align="center">
+![로파이웨이브](https://github.com/seungmin-dev/lofiwave/assets/67530394/883227d6-dad8-4287-96fc-cf8696d4c20a)
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### ✨ 기술스택
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<div style="flex">
+  <img src="https://img.shields.io/badge/nextjs-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"> 
+  <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> 
+  <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"> 
+  <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"> 
+</div>
+<br/>
+<hr/><br/>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### 🖥 페이지 설명
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+유튜브 검색 api로 lofi 음악을 50개 리스트로 받아옵니다. 목록에서 원하는 음악을 선택해서 들을 수 있고, 엘피바 하단의 조작버튼으로 앞,뒤 음악 이동이 가능하고 멈춤,재생이 가능합니다.<br/>
+해당 음악영상의 이미지를 배경과 엘피판에 적용해 조금 더 몰입감 있는 환경을 조성했습니다.
